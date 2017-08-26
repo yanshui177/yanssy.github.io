@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="3D人脸动画生成," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="本文主要参考:   徐彬彬-3d facial animation  WIKI-computer facial animation    3D人脸动画生成三维人脸动画是计算机视觉领域的一个热点。在当今大量的影视作品中都有应用。皮克斯、好莱坞等的动画的主要技术。 面部动画主要有两个要任务，分别是产生动画数据的方法和来重新定位这些数据字符保留尽可能详细的面部表情的技术。像微软Kinect这样的深度相机">
+<meta name="keywords" content="3D人脸动画生成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人脸动画生成">
+<meta property="og:url" content="http://rec4face.com/2017/08/26/人脸表情动画/index.html">
+<meta property="og:site_name" content="闫帅帅的博客">
+<meta property="og:description" content="本文主要参考:   徐彬彬-3d facial animation  WIKI-computer facial animation    3D人脸动画生成三维人脸动画是计算机视觉领域的一个热点。在当今大量的影视作品中都有应用。皮克斯、好莱坞等的动画的主要技术。 面部动画主要有两个要任务，分别是产生动画数据的方法和来重新定位这些数据字符保留尽可能详细的面部表情的技术。像微软Kinect这样的深度相机">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-08-24T06:34:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="人脸动画生成">
+<meta name="twitter:description" content="本文主要参考:   徐彬彬-3d facial animation  WIKI-computer facial animation    3D人脸动画生成三维人脸动画是计算机视觉领域的一个热点。在当今大量的影视作品中都有应用。皮克斯、好莱坞等的动画的主要技术。 面部动画主要有两个要任务，分别是产生动画数据的方法和来重新定位这些数据字符保留尽可能详细的面部表情的技术。像微软Kinect这样的深度相机">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://rec4face.com/2017/08/26/人脸表情动画/"/>
+
+
+
+
+
+  <title>人脸动画生成 | 闫帅帅的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">闫帅帅的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/标签/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://rec4face.com/2017/08/26/人脸表情动画/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="闫帅帅">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/init/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="闫帅帅的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">人脸动画生成</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-26T22:04:04+08:00">
+                2017-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/26/人脸表情动画/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/26/人脸表情动画/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文主要参考:</p>
+<blockquote>
+<ul>
+<li><p><a href="https://freesouls.github.io/2015/04/16/3d-facial-animation" target="_blank" rel="external">徐彬彬-3d facial animation</a></p>
+</li>
+<li><p><a href="https://en.wikipedia.org/wiki/Computer_facial_animation" target="_blank" rel="external">WIKI-computer facial animation</a></p>
+</li>
+</ul>
+</blockquote>
+<h2 id="3D人脸动画生成"><a href="#3D人脸动画生成" class="headerlink" title="3D人脸动画生成"></a>3D人脸动画生成</h2><p>三维人脸动画是计算机视觉领域的一个热点。在当今大量的影视作品中都有应用。皮克斯、好莱坞等的动画的主要技术。</p>
+<p>面部动画主要有两个要任务，分别是产生动画数据的方法和来重新定位这些数据字符保留尽可能详细的面部表情的技术。像微软Kinect这样的深度相机的出现，对实时三维人脸捕捉和相关领域产生了新的兴趣。在本次综述中我将重点放在新技术开发的三维人脸动画利用RGB-D相机与普通照相机只是RGB数据。</p>
+<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>基于计算机的面部表情建模和动画不是一个新的尝试。最早的计算机面部表现的工作是在20世纪70年代初完成的。第一幅三维面部动画由Parke于1972年创建。1973年，Gillenson开发了一个交互式系统来组合和编辑线条画面图像。在1974年，Parke开发了一个参数化的三维面部模型。</p>
+<p>描述面部动作的最重要的尝试之一是面部动作编码系统（FACS）。最初由 <em>Carl-HermanHjortsj</em> [1]在1960年代开发，Ekman和Friesen于1978年更新，FACS定义了46个基本面部动作单元（AU）。这些行动单位的主要群体代表着面部肌肉的原始运动，例如抬起眉毛，眨眼和说话。八个AU是用于刚性三维头部运动（即左右转动和上下移动，向前和向后）。FACS已成功用于描述合成面部的所需运动，也用于跟踪面部活动。</p>
+<p>20世纪80年代初，Platt开发了第一个基于肌肉的肌肉控制面部模型，并发展了Brennan的面部漫画技术。1985年，动画短片Tony de Peltrie是面部动画的里程碑。这标志着电脑面部表情和言语动画第一次成为了动画片中讲故事的基本部分。<br>20世纪80年代后期，Waters开发了一种新的基于肌肉的模型，由Magnenat-Thalmann及其同事开发抽象肌肉动作模型，以及Lewis和Hill自动语音同步的方法。20世纪90年代在面部动画技术的发展和使用计算机面部动画作为一个重要的讲故事组件，如玩具总动员（1995），安茨（1998），史莱克和怪物公司（2001年）和电脑游戏，如Sims。卡斯帕（1995）是这个十年里的一个里程碑，是第一部专门使用数字面部动画制作的主角的电影。</p>
+<p>电影的复杂性在2000年以后有所增加。在“黑客帝国”中，来自几台高清摄像机的密集光流被用于捕捉脸部每一点的逼真的面部动作。“极地快车”（电影）使用大型Vicon系统捕获150点。虽然这些系统是自动化的，但仍然需要大量的手动清理工作来使数据可用。面对动画的另一个里程碑是由“指环王”达成的，那里是一个特殊的形状基础系统。Mark Sagar率先使用FACS在娱乐面部动画，以及由Sagar开发的基于FACS的系统被用于怪物楼，金刚等电影。</p>
+<h2 id="生成面部动画数据"><a href="#生成面部动画数据" class="headerlink" title="生成面部动画数据"></a>生成面部动画数据</h2><p>面部动画数据的生成可以通过不下同的方式进行：</p>
+<blockquote>
+<ul>
+<li>1 基于标记的运动捕捉在表演者的脸上的点或标记上，</li>
+<li>2 使用不同类型的相机的无标记运动捕捉技术</li>
+<li>3 自动驱动技术</li>
+<li>4 关键帧动画</li>
+</ul>
+</blockquote>
+<p>1 运动捕捉使用放置在主体周围的相机。该主体通常配备有精确确定被摄体在空间中的位置的反射器（被动运动捕捉）或源（主动运动捕捉）。然后将由摄像机记录的数据数字化并转换为被摄体的三维计算机模型。直到最近，运动捕捉系统使用的检测器/源的尺寸使得该技术不适于面部捕获。然而，小型化和其他进步使运动捕捉成为计算机面部动画的可行工具。面部动作捕捉被广泛应用于极地特快通过运作公司其中捕获了数百个运动点。这部电影是非常成功的，虽然它试图重现现实主义，但是被批评为“ 不可思议的山谷 ”，动画现实主义对于人类的认知是足够的，并且传达了情感的信息，但是人物不能被察觉的地方如现实 运动捕捉的主要困难是可能包括振动以及点几何重新定位的数据的质量。</p>
+<p>2 无标记运动捕捉旨在简化运动捕捉过程，方法是避免使用标记来阻挡演员。最近出现了几种技术，使用不同的传感器，其中包括标准摄像机，Kinect和深度传感器或其他基于结构光的设备。基于结构光的系统可以实现实时性能，而不需要使用高速结构光扫描器的任何标记。该系统基于强大的离线脸部跟踪阶段，该阶段用不同的面部表情训练系统。匹配序列用于构建随后用于在线面部跟踪和表达转移的人特异性线性面部模型。</p>
+<p>3 音频驱动技术特别适用于语音动画。语言通常以与脸部表情的动画不同的方式来对待，这是因为基于简单的基于关键帧的动画方法通常提供了对真实语音动态的不良近似。通常，视力用于表示观察性言语中的关键姿势（即，在产生特定音素时嘴唇，下颚和舌头的位置），然而在自然言语的制作过程中实现视力方面存在很大差异。这种变异的来源称为共同作用这是周围的眼睛对当前眼睛的影响（即上下文的影响）。考虑到现在的系统，当混合目标关键帧或使用更长的单位（如笛卡尔，三耳机，音节甚至单词和句子）时，可以明确地考虑上下文长度单位。语音动画最常用的方法之一是使用Cohen和Massaro介绍的优势功能。每个优势函数代表一个视角对言语言的影响。通常影响力将在视力中心最大，并且会随距离中心的距离而降低。优势函数被混合在一起，以与样条大致相同的方式生成语音轨迹将基础函数混合在一起以产生曲线。每个优势功能的形状将根据它所代表的视角和脸部的哪个方面（例如唇宽，颌旋转等）而不同。这种计算机生成的语音动画的方法可以在Baldi谈话的头脑中看到。其他模式的语音使用基础单位，包括上下文（例如双声道，三电话等）而不是视角。由于基础单位已经根据上下文以及某种程度上已经纳入了每个眼膜的变化，每个眼睛的动态，没有coarticulation的模型是必须的。语音简单地通过从数据库中选择适当的单位并将单元混合在一起生成。这类似于音频语音合成中的并置技术。这些模型的缺点是需要大量的捕获数据来产生自然的结果，而更长的单位产生更自然的结果，所需数据库的大小随每个单位的平均长度而扩展。最后，一些模型直接从音频生成语音动画。这些系统通常使用隐马尔可夫模型或神经网络将音频参数转换成面部模型的控制参数流。这种方法的优点是语音处理能力，自然节奏，节奏，情感和动态处理能力，无需复杂的近似算法。培训数据库不需要标注，因为没有需要音素或视觉; 唯一需要的数据就是语音和动画参数。</p>
+<p>4 关键帧动画是创建动画数据的过程中最少的自动化，尽管它提供了对动画的最大限度的控制。它通常与其他技术结合使用以将动画的最终抛光。该关键帧数据进行定义标量值的变形目标骨头的系数或旋转和平移值模型与骨基于钻机。通常，加快关键帧动画处理，动画使用控制台。控制代表可以对多个变形目标起作用的更高层次的抽象系数或骨骼。例如，“微笑”控制可以同时对嘴角弯曲和眼睛眯眼。<br>将面部动画应用于角色</p>
+<h3 id="用于向角色应用面部动画的主要技术是："><a href="#用于向角色应用面部动画的主要技术是：" class="headerlink" title="用于向角色应用面部动画的主要技术是："></a>用于向角色应用面部动画的主要技术是：</h3><blockquote>
+<ul>
+<li>1 变形目标动画，</li>
+<li>2 骨骼动画，</li>
+<li>3 基于纹理的动画（2D或3D）</li>
+<li>4 生理模型。</li>
+</ul>
+</blockquote>
+<p>1 基于变形的目标（也称为 “混合形状”）基于系统提供快速播放以及表情的高度保真度。该技术涉及对面部网格的部分进行建模，以近似表情和视差，然后混合不同的子网格，称为变形目标或混合形状。也许使用这种技术的最成功的角色是来自 “指环王”的某个人物。这种技术的缺点是它们涉及到强化的人工劳动，并且是每个角色特定的。最近，3D建模的新概念已经开始出现。最近，从传统技术出发的新技术开始出现，如曲线控制建模[2] 它强调3D对象运动的建模，而不是静态形状的传统建模。</p>
+<p>2 骨骼动画在游戏中广泛使用。骨骼设置可以在几个骨头之间变化，接近一百，以允许所有微妙的面部表情。骨骼动画的主要优点是，只要脸部的形态相似，相同的动画可以用于不同的角色，其次不需要在内存中加载所有的 Morph目标数据。骨骼动画被3D游戏引擎广泛支持。骨骼动画可以用于2D和3D动画。例如，可以使用 Adobe Flash来使用骨骼2D和2D动画。</p>
+<p>3 基于纹理的动画使用像素颜色在角色面上创建动画。2D面部动画通常基于图像的变换，包括来自静态摄影的图像和视频序列。图像变形是允许在一对目标静止图像之间或在视频序列的帧之间生成过渡图像之间的技术。这些变形技术通常由对准图像的几何变形技术和在图像纹理中产生平滑过渡的交叉渐变的组合组成。迈克尔·杰克逊（Michael Jackson）可以看到图像变形的早期例子的视频为“黑色或白色”。在3D动画中，基于纹理的动画可以通过动画化纹理本身或UV映射来实现。在后一种情况下，创建所有面部表情的纹理贴图，并且使用UV映射动画从一个表情转换到下一个表情。</p>
+<p>4 生理模型，如骨骼肌系统和基于身体的头部模型，形成了头部和脸部建模的另一种方法。[3]这里，骨骼，组织和皮肤的物理和解剖特征被模拟以提供逼真的外观（例如弹簧般的弹性）。这样的方法对于创造现实主义来说可能非常强大，但是面部结构的复杂性使它们在计算上是昂贵的，并且难以创建。考虑到用于交际目的的参数化模型的有效性（如下一节所述），可以认为基于物理的模型在许多应用中不是非常有效的选择。这并不否认基于物理的模型的优点，甚至可以在参数化模型的上下文中使用它们，以便在需要时提供本地细节。</p>
+<h2 id="当前数据库"><a href="#当前数据库" class="headerlink" title="当前数据库"></a>当前数据库</h2><blockquote>
+<ul>
+<li><a href="http://gaps-zju.org/facewarehouse/" title="FaceWarehouse" target="_blank" rel="external">FaceWarehouse</a></li>
+<li><a href="http://rgb-d.eurecom.fr/" title="EURECOM Kinect Face Dateset" target="_blank" rel="external">EURECOM Kinect Face Dateset</a> </li>
+</ul>
+</blockquote>
+<h2 id="文章分类"><a href="#文章分类" class="headerlink" title="文章分类"></a>文章分类</h2><h4 id="普通系统"><a href="#普通系统" class="headerlink" title="普通系统"></a>普通系统</h4><h5 id="基于标记（Marker）的系统"><a href="#基于标记（Marker）的系统" class="headerlink" title="基于标记（Marker）的系统"></a>基于标记（Marker）的系统</h5><p>[1]: HUANG, H., CHAI, J., TONG, X., AND WU, H. 2011. Leveraging motion capture and 3d scanning for high-fidelity facial performance acquisition. ACM Trans. Graph. 30, 74:1–74:10.<br>[2]: DENG, Z., CHIANG, P.-Y., FOX, P., AND NEUMANN, U. 2006. Animating blendshape faces by cross-mapping motion capture data. In I3D, 43–48. </p>
+<h5 id="基于摄像头阵列和多视角的系统"><a href="#基于摄像头阵列和多视角的系统" class="headerlink" title="基于摄像头阵列和多视角的系统"></a>基于摄像头阵列和多视角的系统</h5><p>[3]: BRADLEY, D., HEIDRICH, W., POPA, T., AND SHEFFER, A. 2010. High resolution passive facial performance capture. ACM Trans. Graph. 29, 41:1–41:10.</p>
+<h5 id="使用了结构光的系统"><a href="#使用了结构光的系统" class="headerlink" title="使用了结构光的系统"></a>使用了结构光的系统</h5><p>[4]: WEISE, T., LI, H., GOOL, L. V., AND PAULY, M. 2009. Face/off: Live facial puppetry. In SCA, 7–16.<br>[5]: ZHANG, L., SNAVELY, N., CURLESS, B., AND SEITZ, S. M. 2004. Spacetime faces: high resolution capture for modeling and animation. ACM Trans. Graph. 23, 548–558.<br>以上的这些技术，都需要特殊的硬件，熟练的调试功能以及细心的对准</p>
+<h5 id="使用了Kinect的RGB-D数据"><a href="#使用了Kinect的RGB-D数据" class="headerlink" title="使用了Kinect的RGB-D数据"></a>使用了Kinect的RGB-D数据</h5><p>首先，它们使用基于快速迭代最近点法（ICP）的刚性对齐来聚合多个输入深度图，以获得具有更好的面部覆盖的合并的3D点云。估计驱动数字头像的混合体重量通过解决MAP问题而获得非刚性面部，其中使用从现有混合形状学习中获取的概率动画.通过考虑连续帧的窗口来利用时间一致性   ps：【17】基于6 需要用户特定的训练或校准，使用RGB-D相机<br>[6]: WEISE, T., BOUAZIZ, S., LI, H., AND PAULY, M. 2011. Realtime performance-based facial animation. ACM Trans. Graph. 30, 77:1–77:10.</p>
+<h5 id="仅仅使用了普通网络摄像头"><a href="#仅仅使用了普通网络摄像头" class="headerlink" title="仅仅使用了普通网络摄像头"></a>仅仅使用了普通网络摄像头</h5><p>[7]:CAO, C., WENG, Y., LIN, S., ZHOU, K. 2013. 3D shape regression for real-time facial animation. ACM Trans. Graph. 32,4(July), 41:1-41:10.<br>需要用户特定的训练或校准，只使用普通相机只有RGB数据， || 缺点是需要用户特定的培训和相机校准<br>[8]: CAO, C., HOU, Q., ZHOU, K. 2014. Displaced dynamic expression for real-time facial tracking and Animation. ACM Trans. Graph.</p>
+<h5 id="混合形状模型基于下面的面部运动编码系统"><a href="#混合形状模型基于下面的面部运动编码系统" class="headerlink" title="混合形状模型基于下面的面部运动编码系统"></a>混合形状模型基于下面的面部运动编码系统</h5><p>只使用普通相机只有RGB数据, [9]是对[8]的一个很大的改进，不需要任何校准。它只运行在24fps，这仍然是很多事情要做。如果脸部被部分遮挡<br>[9]:EKMAN, P., AND FRIESEN, W. 1978. Facial Action Coding System: A Technique for the Measurement of Facial Movement. Consulting Psychologists Press.<br>FaceWarehouse是一个用于虚拟计算应用的3D人脸表情数据库,使用kinect的RGB-D拍摄<br>[10]: CAO, C., WENG, Y., ZHOU, S., TONG, Y., AND ZHOU, K. 2013. Facewarehouse: a 3D facial expression database for visual computing. IEEE TVCG.</p>
+<h5 id="Deep-Learning-to-predict-the-landmarks使用深度学习确定标记位置-Facebook-AI-Research-face-etc-uses-this-kind-of-technology-但是速度比较慢，达不到实时性的要求"><a href="#Deep-Learning-to-predict-the-landmarks使用深度学习确定标记位置-Facebook-AI-Research-face-etc-uses-this-kind-of-technology-但是速度比较慢，达不到实时性的要求" class="headerlink" title="Deep Learning to predict the landmarks使用深度学习确定标记位置(Facebook AI Research, face++ etc. uses this kind of technology).但是速度比较慢，达不到实时性的要求"></a>Deep Learning to predict the landmarks使用深度学习确定标记位置(Facebook AI Research, face++ etc. uses this kind of technology).但是速度比较慢，达不到实时性的要求</h5><p>[11]: TAIGMAN, Y., YANG, M., RANZATO, M., WOLF, L. 2014. DeepFace: Closing the Gap to Human-Level Performance in Face Verification. In Computer Vision and Pattern Recognition (CVPR), 2014 IEEE Conference on.</p>
+<h5 id="Active-Appearance-Models-AAM-通过联合建模整体模型形状的方法解决了脸部的配准（Alignment）问题"><a href="#Active-Appearance-Models-AAM-通过联合建模整体模型形状的方法解决了脸部的配准（Alignment）问题" class="headerlink" title="Active Appearance Models   AAM  通过联合建模整体模型形状的方法解决了脸部的配准（Alignment）问题"></a>Active Appearance Models   AAM  通过联合建模整体模型形状的方法解决了脸部的配准（Alignment）问题</h5><p>[12]: COOTES, T., EDWARDS, G., TAYLOR, J. 2011. Active appearance models. Pattern Analysis and Machine Intelligence, IEEE Transactions on</p>
+<h5 id="Constrained-Local-Model-CLM（局部约束模型）-学习一套局部检测器或回归，限制他们使用不同的模型"><a href="#Constrained-Local-Model-CLM（局部约束模型）-学习一套局部检测器或回归，限制他们使用不同的模型" class="headerlink" title="Constrained Local Model  CLM（局部约束模型）  学习一套局部检测器或回归，限制他们使用不同的模型"></a>Constrained Local Model  CLM（局部约束模型）  学习一套局部检测器或回归，限制他们使用不同的模型</h5><p>[13]: ZHU, X., and RAMANAN, D. 2012. Face detection, pose estimation, and landmark localization in the wild. In Computer Vision and Pattern Recognition (CVPR), 2012 IEEE Conference on.<br>IEEE, 2012. 2, 5<br>[14]: BALTRUˇSAITIS, T., ROBINSON, P., AND MORENCY, L.-P. 2012. 3d constrained local model for rigid and non-rigid facial tracking. In CVPR, 2610–2617.</p>
+<h5 id="级联姿态回归（Cascade-Pose-Regression-CPR）"><a href="#级联姿态回归（Cascade-Pose-Regression-CPR）" class="headerlink" title="级联姿态回归（Cascade Pose Regression  CPR）"></a>级联姿态回归（Cascade Pose Regression  CPR）</h5><p>是一种将前一阶段的姿态估计作为下一阶段的输入，然后在当前阶段输出精化的姿态估计的多阶段回归方法。在每个阶段，首先利用随机森林学习一组局部二元特征，然后利用全局线性回归得到全局推广，估计参数可以逐步细化。该算法可以在正常的计算机上实现3000 + fps和在手机上实现300 + fps时进行面部对齐。是当前最先进的面部对准方法[15]<br>[15]: REN, S., CAO, X., WEI, Y., SUN, J. 2014. Face alignment at 3000fps via regression local binary features. In Computer Vision and Pattern Recognition (CVPR), 2014 IEEE Conference on.</p>
+<h5 id="PCA模型-来自于改进的由下文提出的可变形模型"><a href="#PCA模型-来自于改进的由下文提出的可变形模型" class="headerlink" title="PCA模型  来自于改进的由下文提出的可变形模型:"></a>PCA模型  来自于改进的由下文提出的可变形模型:</h5><p>[16]: BLANZ, V., AND VETTER, T. 1999. A morphable model for the synthesis of 3d faces. In Proc. SIGGRAPH, 187–194. </p>
+<h5 id="用PCA模型，利用PCA模型得到刚性的中性表情。"><a href="#用PCA模型，利用PCA模型得到刚性的中性表情。" class="headerlink" title="用PCA模型，利用PCA模型得到刚性的中性表情。"></a>用PCA模型，利用PCA模型得到刚性的中性表情。</h5><p>17是基于文章6得到的。使用RGB-D相机，使用PCA模型和一些修正，表达细节比[6]更准确，而他们仍然无法捕获一些细节，通过转换中性混合形状来产生混合形状<br>[17]: LI, H., YU, J., YE, Y., AND BREGLER, C. 2013. Realtime facial animation with on-the-fly correctives. ACM Trans. Graph. 32, 4 (July), 42:1–42:10.</p>
+<h5 id="非刚性ICP算法"><a href="#非刚性ICP算法" class="headerlink" title="非刚性ICP算法"></a>非刚性ICP算法</h5><p>[18]: LI, H., ADAMS, B., GUIBAS, L. J., AND PAULY, M. 2009. Robust single-view geometry and motion reconstruction. ACM Transactions on Graphics (Proceedings SIGGRAPH Asia 2009) 28, 5.<br>[19]: SUMNER, R. W., AND POPOVI′C , J. 2004. Deformation transfer for triangle meshes. ACM Trans. Graph. 23, 3 (Aug.), 399–405.</p>
+<p>[20]与[17]类似，但它们使用校正变形字段来获取用户特定的细节。每顶点位移使用由k个最后的特征向量E定义的频谱表示来建模</p>
+<h5 id="使用RGB-D相机，使用PCA模型和一些修正，表达细节比-6-更准确，而他们仍然无法捕获一些细节，通过转换中性混合形状来产生混合形状"><a href="#使用RGB-D相机，使用PCA模型和一些修正，表达细节比-6-更准确，而他们仍然无法捕获一些细节，通过转换中性混合形状来产生混合形状" class="headerlink" title="使用RGB-D相机，使用PCA模型和一些修正，表达细节比[6]更准确，而他们仍然无法捕获一些细节，通过转换中性混合形状来产生混合形状"></a>使用RGB-D相机，使用PCA模型和一些修正，表达细节比[6]更准确，而他们仍然无法捕获一些细节，通过转换中性混合形状来产生混合形状</h5><p>[20]: BOUAZIZ, S., WANG, Y., AND PAULY, M. 2013. Online modeling for realtime facial animation. ACM Trans. Graph. 32, 4 (July), 40:1–40:10.</p>
+<h5 id="提出了一种实时的任意形状的非刚性变形物体的无标记重建的组合硬件和软件解决方案。它们采用RGB-D数据和一种新颖的基于GPU的管道。我认为使用这种基于GPU的方法可以显着改善3D面部动画中的表现细节重建，并加快计算速度。"><a href="#提出了一种实时的任意形状的非刚性变形物体的无标记重建的组合硬件和软件解决方案。它们采用RGB-D数据和一种新颖的基于GPU的管道。我认为使用这种基于GPU的方法可以显着改善3D面部动画中的表现细节重建，并加快计算速度。" class="headerlink" title="提出了一种实时的任意形状的非刚性变形物体的无标记重建的组合硬件和软件解决方案。它们采用RGB-D数据和一种新颖的基于GPU的管道。我认为使用这种基于GPU的方法可以显着改善3D面部动画中的表现细节重建，并加快计算速度。"></a>提出了一种实时的任意形状的非刚性变形物体的无标记重建的组合硬件和软件解决方案。它们采用RGB-D数据和一种新颖的基于GPU的管道。我认为使用这种基于GPU的方法可以显着改善3D面部动画中的表现细节重建，并加快计算速度。</h5><p>[21]: ZOLLHOFER, M., NIEBNER, M. et al. 2014. Real-time Non-rgid reconstruction using an RGB-D camera. ACM Trans. Graph.</p>
+<h5 id="提出了一种称为PCPR的方法来处理遮挡物。RCPR在四个不同的不同面孔数据集上胜过以前的地标估计工作。RCPR对初始化不良，大形状变形和闭塞更为鲁棒。当然，其他技术将会带来更好的表现也可以用于3D面部动画，让我们等待新的方法来。"><a href="#提出了一种称为PCPR的方法来处理遮挡物。RCPR在四个不同的不同面孔数据集上胜过以前的地标估计工作。RCPR对初始化不良，大形状变形和闭塞更为鲁棒。当然，其他技术将会带来更好的表现也可以用于3D面部动画，让我们等待新的方法来。" class="headerlink" title="提出了一种称为PCPR的方法来处理遮挡物。RCPR在四个不同的不同面孔数据集上胜过以前的地标估计工作。RCPR对初始化不良，大形状变形和闭塞更为鲁棒。当然，其他技术将会带来更好的表现也可以用于3D面部动画，让我们等待新的方法来。"></a>提出了一种称为PCPR的方法来处理遮挡物。RCPR在四个不同的不同面孔数据集上胜过以前的地标估计工作。RCPR对初始化不良，大形状变形和闭塞更为鲁棒。当然，其他技术将会带来更好的表现也可以用于3D面部动画，让我们等待新的方法来。</h5><p>[22]: BURGOS-ARTIZZU, X., PERONA, P., and DOLLAR, P. 2013. Robust face landmark estimation under occlusion. ICCV</p>
+<h2 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h2><p>基于特殊设备（例如标记[3,4]，结构光[5,6]和相机阵列[7,8]）的跟踪算法已被广泛应用于需要高保真动画的电影制作中。能够生成高质量的动画，由于需要特殊设备，这些方法不适合普通用户使用。操作复杂且需要专业的人士进行指导。</p>
+<p>另外就是基于简单设备（如普通摄像机）的人脸跟踪/动画：这些方法简单，仅仅需要普通的网络摄像头既可以工作。但是缺点在于，需要实现训练好不同的表情模型，对应于每一个人脸的表情，而且最终得到的表情精度不高，分辨率比较低。</p>
+<h2 id="一些常见的消费级产品"><a href="#一些常见的消费级产品" class="headerlink" title="一些常见的消费级产品"></a>一些常见的消费级产品</h2><blockquote>
+<ul>
+<li>Face Plus：无<br>标记面部捕捉和面部动画，实时。使用Face Plus，您需要做的就是坐在网络摄像头前面，执行您要应用于3D人物的表情，并在3D游戏引擎中实时观看。</li>
+<li>Faceshift：<br>Faceshift首先扫描一组表情，以训练您的个性化头像进行跟踪。然后通过实时反馈捕获一个性能，并可以提高后处理阶段的准确性。最后动画虚拟化身，并将动画导出到您最喜爱的3D动画软件，或连接到现有的动画管道。</li>
+<li><p>CubicMotion：略</p>
+</li>
+<li><p>Soulmachines <a href="https://www.soulmachines.com/" target="_blank" rel="external">https://www.soulmachines.com/</a></p>
+</li>
+</ul>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/3D人脸动画生成/" rel="tag"># 3D人脸动画生成</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/26/Hello，babe/" rel="prev" title="Hello World">
+                Hello World <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/init/avatar.jpg"
+               alt="闫帅帅" />
+          <p class="site-author-name" itemprop="name">闫帅帅</p>
+           
+              <p class="site-description motion-element" itemprop="description">TO BE NO.1</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/目录/">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3D人脸动画生成"><span class="nav-number">1.</span> <span class="nav-text">3D人脸动画生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#历史"><span class="nav-number">2.</span> <span class="nav-text">历史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成面部动画数据"><span class="nav-number">3.</span> <span class="nav-text">生成面部动画数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用于向角色应用面部动画的主要技术是："><span class="nav-number">3.1.</span> <span class="nav-text">用于向角色应用面部动画的主要技术是：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#当前数据库"><span class="nav-number">4.</span> <span class="nav-text">当前数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文章分类"><span class="nav-number">5.</span> <span class="nav-text">文章分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#普通系统"><span class="nav-number">5.0.1.</span> <span class="nav-text">普通系统</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基于标记（Marker）的系统"><span class="nav-number">5.0.1.1.</span> <span class="nav-text">基于标记（Marker）的系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#基于摄像头阵列和多视角的系统"><span class="nav-number">5.0.1.2.</span> <span class="nav-text">基于摄像头阵列和多视角的系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用了结构光的系统"><span class="nav-number">5.0.1.3.</span> <span class="nav-text">使用了结构光的系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用了Kinect的RGB-D数据"><span class="nav-number">5.0.1.4.</span> <span class="nav-text">使用了Kinect的RGB-D数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#仅仅使用了普通网络摄像头"><span class="nav-number">5.0.1.5.</span> <span class="nav-text">仅仅使用了普通网络摄像头</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#混合形状模型基于下面的面部运动编码系统"><span class="nav-number">5.0.1.6.</span> <span class="nav-text">混合形状模型基于下面的面部运动编码系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Deep-Learning-to-predict-the-landmarks使用深度学习确定标记位置-Facebook-AI-Research-face-etc-uses-this-kind-of-technology-但是速度比较慢，达不到实时性的要求"><span class="nav-number">5.0.1.7.</span> <span class="nav-text">Deep Learning to predict the landmarks使用深度学习确定标记位置(Facebook AI Research, face++ etc. uses this kind of technology).但是速度比较慢，达不到实时性的要求</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Active-Appearance-Models-AAM-通过联合建模整体模型形状的方法解决了脸部的配准（Alignment）问题"><span class="nav-number">5.0.1.8.</span> <span class="nav-text">Active Appearance Models   AAM  通过联合建模整体模型形状的方法解决了脸部的配准（Alignment）问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Constrained-Local-Model-CLM（局部约束模型）-学习一套局部检测器或回归，限制他们使用不同的模型"><span class="nav-number">5.0.1.9.</span> <span class="nav-text">Constrained Local Model  CLM（局部约束模型）  学习一套局部检测器或回归，限制他们使用不同的模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#级联姿态回归（Cascade-Pose-Regression-CPR）"><span class="nav-number">5.0.1.10.</span> <span class="nav-text">级联姿态回归（Cascade Pose Regression  CPR）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PCA模型-来自于改进的由下文提出的可变形模型"><span class="nav-number">5.0.1.11.</span> <span class="nav-text">PCA模型  来自于改进的由下文提出的可变形模型:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#用PCA模型，利用PCA模型得到刚性的中性表情。"><span class="nav-number">5.0.1.12.</span> <span class="nav-text">用PCA模型，利用PCA模型得到刚性的中性表情。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#非刚性ICP算法"><span class="nav-number">5.0.1.13.</span> <span class="nav-text">非刚性ICP算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用RGB-D相机，使用PCA模型和一些修正，表达细节比-6-更准确，而他们仍然无法捕获一些细节，通过转换中性混合形状来产生混合形状"><span class="nav-number">5.0.1.14.</span> <span class="nav-text">使用RGB-D相机，使用PCA模型和一些修正，表达细节比[6]更准确，而他们仍然无法捕获一些细节，通过转换中性混合形状来产生混合形状</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#提出了一种实时的任意形状的非刚性变形物体的无标记重建的组合硬件和软件解决方案。它们采用RGB-D数据和一种新颖的基于GPU的管道。我认为使用这种基于GPU的方法可以显着改善3D面部动画中的表现细节重建，并加快计算速度。"><span class="nav-number">5.0.1.15.</span> <span class="nav-text">提出了一种实时的任意形状的非刚性变形物体的无标记重建的组合硬件和软件解决方案。它们采用RGB-D数据和一种新颖的基于GPU的管道。我认为使用这种基于GPU的方法可以显着改善3D面部动画中的表现细节重建，并加快计算速度。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#提出了一种称为PCPR的方法来处理遮挡物。RCPR在四个不同的不同面孔数据集上胜过以前的地标估计工作。RCPR对初始化不良，大形状变形和闭塞更为鲁棒。当然，其他技术将会带来更好的表现也可以用于3D面部动画，让我们等待新的方法来。"><span class="nav-number">5.0.1.16.</span> <span class="nav-text">提出了一种称为PCPR的方法来处理遮挡物。RCPR在四个不同的不同面孔数据集上胜过以前的地标估计工作。RCPR对初始化不良，大形状变形和闭塞更为鲁棒。当然，其他技术将会带来更好的表现也可以用于3D面部动画，让我们等待新的方法来。</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#挑战"><span class="nav-number">6.</span> <span class="nav-text">挑战</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些常见的消费级产品"><span class="nav-number">7.</span> <span class="nav-text">一些常见的消费级产品</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017.08.18 &mdash; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">闫帅帅</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    Theme &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Gemini
+    </a>
+  </div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://yannsy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://rec4face.com/2017/08/26/人脸表情动画/';
+          this.page.identifier = '2017/08/26/人脸表情动画/';
+          this.page.title = '人脸动画生成';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://yannsy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
